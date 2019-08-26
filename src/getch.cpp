@@ -1,3 +1,7 @@
+/*
+This code is copied from https://stackoverflow.com/a/7469410
+to be able to use getch() equivalent function.
+*/
 #include <termios.h>
 #include <stdio.h>
 
