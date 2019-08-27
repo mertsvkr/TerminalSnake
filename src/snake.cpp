@@ -32,90 +32,69 @@ bool Snake::move(bool* isThereFood){
     }
 }
 
-bool Snake::moveTheHead(bool* foodEaten, bool* isThereFood){
-    CellStates headStatus = map->getCellStatus(headLocation);
-    Location* tempLocation; // this variable is for preventing
-                            //memoryleaks while sending a new Location instance as argument
+bool Snake::checkMapBorderCollision(CellStates &headStatus, Location* headLocation){
 
-    //move the head
     if(headStatus == RIGHT_CONTD || headStatus == RIGHT_CORNER){
         if(headLocation->x + 1 > 50){
             return false;
         }
-        else if((map->getCellStatus(tempLocation = new Location(headLocation->x + 1, headLocation->y)) != EMPTY)
-                &&(map->getCellStatus(tempLocation) != FOOD)){
-            return false;
-        }
-        else{
-            if(map->getCellStatus(tempLocation) == FOOD){
-                *foodEaten = true;
-                *isThereFood = false;
-            }
-            headLocation->x += 1;
-            map->setCellStatus(headLocation, RIGHT_CONTD);
-        }
+        headLocation->x += 1;
+        headStatus = RIGHT_CONTD;
     }
-
     else if(headStatus == LEFT_CONTD || headStatus == LEFT_CORNER){
         if(headLocation->x - 1 < 1){
             return false;
         }
-        else if((map->getCellStatus(tempLocation = new Location(headLocation->x - 1, headLocation->y)) != EMPTY)
-                && (map->getCellStatus(tempLocation) != FOOD)){
-            return false;
-        }
-        else{
-            if(map->getCellStatus(tempLocation) == FOOD){
-                *foodEaten = true;
-                *isThereFood = false;
-            }
-            headLocation->x -= 1;
-            map->setCellStatus(headLocation, LEFT_CONTD);
-        }
+        headLocation->x -=1;
+        headStatus = LEFT_CONTD;
     }
     else if(headStatus == DOWN_CONTD || headStatus == DOWN_CORNER){
         if(headLocation->y + 1 > 20){
             return false;
         }
-        else if((map->getCellStatus(tempLocation = new Location(headLocation->x, headLocation->y + 1)) != EMPTY)
-                &&(map->getCellStatus(tempLocation) != FOOD)){
-            return false;
-        }
-        else{
-            if(map->getCellStatus(tempLocation) == FOOD){
-                *foodEaten = true;
-                *isThereFood = false;
-            }
-            headLocation->y += 1;
-            map->setCellStatus(headLocation, DOWN_CONTD);
-        }
+        headLocation->y += 1;
+        headStatus = DOWN_CONTD;
     }
     else if (headStatus == UP_CONTD || headStatus == UP_CORNER){
         if(headLocation->y - 1 < 1){
             return false;
         }
-        else if((map->getCellStatus(tempLocation = new Location(headLocation->x , headLocation->y - 1)) != EMPTY)
-        &&(map->getCellStatus(tempLocation) != FOOD)){
-            return false;
-        }
-        else{
-            if(map->getCellStatus(tempLocation) == FOOD){
-                *foodEaten = true;
-                *isThereFood = false;
-            }
-            headLocation->y -= 1;
-            map->setCellStatus(headLocation, UP_CONTD);
-        }
+        headLocation->y -=1;
+        headStatus = UP_CONTD;
     }
-
-    //put the head on screen.
-    cout<<"\033["<<headLocation->y + 1<<";"<<headLocation->x + 1<<"Ho";
-
-    if(tempLocation != NULL){
-        delete tempLocation;
-    }
-
     return true;
+}
+
+bool Snake::checkSnakeCollision(Location* headLocation, Map* map, bool* foodEaten, bool* isThereFood){
+    if(map->getCellStatus(headLocation) == EMPTY){
+        return true;
+    }
+    else if(map->getCellStatus(headLocation) == FOOD){
+        *foodEaten = true;
+        *isThereFood = false;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool Snake::moveTheHead(bool* foodEaten, bool* isThereFood){
+    CellStates headStatus = map->getCellStatus(headLocation);
+
+    //move the head
+    if(checkMapBorderCollision(headStatus, headLocation)){
+        if(checkSnakeCollision(headLocation, map, foodEaten, isThereFood)){
+            //there is no collision so move demand is approved
+            //set the map
+            map->setCellStatus(headLocation, headStatus);
+            //put the head on screen.
+            cout<<"\033["<<headLocation->y + 1<<";"<<headLocation->x + 1<<"Ho";
+            return true;
+        }
+    }
+    return false;
+
 }
 void Snake::moveTheTail(bool foodEaten){
 

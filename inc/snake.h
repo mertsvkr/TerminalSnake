@@ -6,6 +6,8 @@
 class Snake{
     Map* map;
     bool moveTheHead(bool*, bool*);
+    bool checkSnakeCollision(Location*, Map*, bool*, bool*);
+    bool checkMapBorderCollision(CellStates &, Location*);
     void moveTheTail(bool);
 
 public:
