@@ -28,6 +28,8 @@ void Game::mainPage(){
     while(selection != '4'){
         selection = '\0';
         system("clear");
+        system("clear");
+
         cout<<"\033[1;1H";
 
         cout<<"1. Start to play"<<endl;
@@ -74,11 +76,11 @@ void Game::changeMapSize(){
     cout<<"Set new vertical length: ";
     cin >> VERTICAL_LENGTH;
 
-    if(HORIZONTAL_LENGTH < 30){
-        HORIZONTAL_LENGTH = 30;
+    if(HORIZONTAL_LENGTH < 20){
+        HORIZONTAL_LENGTH = 20;
     }
-    if(VERTICAL_LENGTH > 43){
-        VERTICAL_LENGTH = 43;
+    if(VERTICAL_LENGTH > 44){
+        VERTICAL_LENGTH = 44;
     }
     if(HORIZONTAL_LENGTH > 150){
         HORIZONTAL_LENGTH = 150;
@@ -86,6 +88,15 @@ void Game::changeMapSize(){
     if(VERTICAL_LENGTH < 10){
         VERTICAL_LENGTH = 10;
     }
+
+    //lengths should be even number
+    if(HORIZONTAL_LENGTH % 2 ){
+        HORIZONTAL_LENGTH -= 1;
+    }
+    if(VERTICAL_LENGTH % 2){
+        VERTICAL_LENGTH -= 1;
+    }
+
     //setting the terminal screen size
     cout<<"\e[8;"<<VERTICAL_LENGTH+10<<";"<< HORIZONTAL_LENGTH+30<< "t";
 }
