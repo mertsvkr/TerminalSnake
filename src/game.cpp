@@ -15,21 +15,29 @@ using namespace std;
 
 void Game::open(){
     mainPage();
+    system("clear");
 }
 
 void Game::mainPage(){
     char selection = '\0';
     int score;
 
-    while(selection != '2'){
+    while(selection != '3'){
         selection = '\0';
         system("clear");
 
         cout<<"1. Start to play"<<endl;
-        cout<<"2. Quit the game"<<endl;
-        while(selection != '1' && selection != '2'){
-            cout<<"\033[3;1H";
-            cout<<"Select only 1 or 2: ";
+        cout<<"2. How to play"<<endl;
+        cout<<"3. Quit the game"<<endl;
+        cout<<"Choose: ";
+        cin>>selection;
+
+        while(selection != '1' && selection != '2' && selection != '3'){
+            system("clear");
+            cout<<"1. Start to play"<<endl;
+            cout<<"2. How to play"<<endl;
+            cout<<"3. Quit the game"<<endl;
+            cout<<"Choose: ";
             cin>>selection;
         }
 
@@ -37,9 +45,19 @@ void Game::mainPage(){
             score = startGame();
             gameOverScreen(score);
         }
+        else if(selection == '2'){
+            howToPlay();
+        }
     }
 }
 
+void Game::howToPlay(){
+    system("clear");
+    cout<<"You can control the snake with 'w,a,s,d' keys"<<endl;
+    cout<<"BUT be sure your capslock is not active!"<<endl;
+    getch();
+    getch();
+}
 void Game::gameOverScreen(int score){
     cout<<"\033[1;31m"; // red color
     cout<<"\033[6;15H";

@@ -25,6 +25,7 @@ private:
     int startGame();
     static bool isDirectionChanged(char* direction, Snake* snake, Map* map);
     void gameOverScreen(int);
+    void howToPlay();
 public:
     void open();
 };
