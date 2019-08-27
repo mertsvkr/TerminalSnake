@@ -26,6 +26,7 @@ private:
     static bool isDirectionChanged(char* direction, Snake* snake, Map* map);
     void gameOverScreen(int);
     void howToPlay();
+    void changeMapSize();
 public:
     void open();
 };

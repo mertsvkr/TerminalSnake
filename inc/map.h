@@ -3,6 +3,10 @@
 #include "cellstates.h"
 #include "location.h"
 
+//lengths for map size
+extern int HORIZONTAL_LENGTH ;
+extern int VERTICAL_LENGTH;
+
 class Map{
     CellStates **cells;
     void drawMap();

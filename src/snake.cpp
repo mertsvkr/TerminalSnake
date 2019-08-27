@@ -8,12 +8,12 @@ using namespace std;
 
 Snake::Snake(Map* map){
     this->map = map;
-    this->headLocation = new Location(27,9);
-    this->tailLocation = new Location(26,9);
+    this->headLocation = new Location(HORIZONTAL_LENGTH / 2 + 2,  VERTICAL_LENGTH / 2 - 1);
+    this->tailLocation = new Location(HORIZONTAL_LENGTH / 2 + 1,  VERTICAL_LENGTH / 2 - 1);
     this->map->setCellStatus(this->headLocation, RIGHT_CONTD);
     this->map->setCellStatus(this->tailLocation, RIGHT_CONTD);
-    cout<<"\033[10;27Ho";
-    cout<<"\033[10;28Ho";
+    cout<<"\033["<< VERTICAL_LENGTH / 2 <<";"<< HORIZONTAL_LENGTH / 2 + 2<<"Ho";
+    cout<<"\033[" << VERTICAL_LENGTH / 2 << ";"<< HORIZONTAL_LENGTH / 2 + 3 << "Ho";
 
 }
 Snake::~Snake(){
@@ -35,7 +35,7 @@ bool Snake::move(bool* isThereFood){
 bool Snake::checkMapBorderCollision(CellStates &headStatus, Location* headLocation){
 
     if(headStatus == RIGHT_CONTD || headStatus == RIGHT_CORNER){
-        if(headLocation->x + 1 > 50){
+        if(headLocation->x + 1 > HORIZONTAL_LENGTH){
             return false;
         }
         headLocation->x += 1;
@@ -49,7 +49,7 @@ bool Snake::checkMapBorderCollision(CellStates &headStatus, Location* headLocati
         headStatus = LEFT_CONTD;
     }
     else if(headStatus == DOWN_CONTD || headStatus == DOWN_CORNER){
-        if(headLocation->y + 1 > 20){
+        if(headLocation->y + 1 > VERTICAL_LENGTH){
             return false;
         }
         headLocation->y += 1;

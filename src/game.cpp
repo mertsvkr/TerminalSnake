@@ -16,27 +16,35 @@ using namespace std;
 void Game::open(){
     mainPage();
     system("clear");
+    cout<<"\033[1;1H";
 }
 
 void Game::mainPage(){
     char selection = '\0';
     int score;
+    //setting the terminal screen size
+    cout<<"\e[8;"<<VERTICAL_LENGTH+10<<";"<< HORIZONTAL_LENGTH+30<< "t";
 
-    while(selection != '3'){
+    while(selection != '4'){
         selection = '\0';
         system("clear");
+        cout<<"\033[1;1H";
 
         cout<<"1. Start to play"<<endl;
-        cout<<"2. How to play"<<endl;
-        cout<<"3. Quit the game"<<endl;
+        cout<<"2. Change the map size"<<endl;
+        cout<<"3. How to play"<<endl;
+        cout<<"4. Quit the game"<<endl;
         cout<<"Choose: ";
         cin>>selection;
 
-        while(selection != '1' && selection != '2' && selection != '3'){
+        while(selection != '1' && selection != '2' && selection != '3' && selection != '4'){
             system("clear");
+            cout<<"\033[1;1H";
+
             cout<<"1. Start to play"<<endl;
-            cout<<"2. How to play"<<endl;
-            cout<<"3. Quit the game"<<endl;
+            cout<<"2. Change the map size"<<endl;
+            cout<<"3. How to play"<<endl;
+            cout<<"4. Quit the game"<<endl;
             cout<<"Choose: ";
             cin>>selection;
         }
@@ -46,44 +54,77 @@ void Game::mainPage(){
             gameOverScreen(score);
         }
         else if(selection == '2'){
+            changeMapSize();
+        }
+        else if(selection == '3'){
             howToPlay();
         }
     }
 }
 
+void Game::changeMapSize(){
+    system("clear");
+    cout<<"\033[1;1H";
+
+    cout<<"Current map sizes are"<<endl;
+    cout<<"Horizontal: "<<HORIZONTAL_LENGTH<<endl;
+    cout<<"Vertical: "<<VERTICAL_LENGTH<<endl;
+    cout<<"Set new horizontal length: ";
+    cin >> HORIZONTAL_LENGTH;
+    cout<<"Set new vertical length: ";
+    cin >> VERTICAL_LENGTH;
+
+    if(HORIZONTAL_LENGTH < 30){
+        HORIZONTAL_LENGTH = 30;
+    }
+    if(VERTICAL_LENGTH > 43){
+        VERTICAL_LENGTH = 43;
+    }
+    if(HORIZONTAL_LENGTH > 150){
+        HORIZONTAL_LENGTH = 150;
+    }
+    if(VERTICAL_LENGTH < 10){
+        VERTICAL_LENGTH = 10;
+    }
+    //setting the terminal screen size
+    cout<<"\e[8;"<<VERTICAL_LENGTH+10<<";"<< HORIZONTAL_LENGTH+30<< "t";
+}
+
 void Game::howToPlay(){
     system("clear");
+    cout<<"\033[1;1H";
+
     cout<<"You can control the snake with 'w,a,s,d' keys"<<endl;
     cout<<"BUT be sure your capslock is not active!"<<endl;
     getch();
     getch();
 }
 void Game::gameOverScreen(int score){
-    cout<<"\033[1;31m"; // red color
-    cout<<"\033[6;15H";
+    cout<<"\033[1;31m"; // red color bold font
+    cout<<"\033["<<VERTICAL_LENGTH / 2 - 4<<";"<<HORIZONTAL_LENGTH / 2 - 10<<"H";
 
     //drawing a red frame with '#'
     for(int i =0; i < 30; i++){
         cout<<"#";
     }
-    cout<<"\033[7;15H";
+    cout<<"\033["<<VERTICAL_LENGTH / 2 - 3<<";"<<HORIZONTAL_LENGTH / 2 - 10<<"H";
     for(int i = 0; i < 7; i++){
         cout<<"#";
         for(int k = 0; k < 28; k++){
             cout<<" ";
         }
         cout<<"#";
-        cout<<"\033["<<8+i<<";"<<"15H";
+        cout<<"\033["<<VERTICAL_LENGTH / 2 - 2 + i<<";"<<HORIZONTAL_LENGTH / 2 - 10<<"H";
     }
     for(int i =0; i < 30; i++){
         cout<<"#";
     }
 
     //showing the text
-    cout<<"\033[8;26H";
+    cout<<"\033["<<VERTICAL_LENGTH / 2 - 2<<";"<<HORIZONTAL_LENGTH / 2 + 1<<"H";
     cout<<"GAME OVER";
-    cout<<"\033[10;28HSCORE";
-    cout<<"\033[12;30H"<<score;
+    cout<<"\033["<<VERTICAL_LENGTH / 2<<";"<<HORIZONTAL_LENGTH / 2 + 3<<"HSCORE";
+    cout<<"\033["<<VERTICAL_LENGTH / 2 + 2<< ";"<<HORIZONTAL_LENGTH / 2 + 5<<"H"<<score;
     cout<<"\033[0;37m"; // white color
     fflush(stdout);
     getch();
@@ -108,7 +149,7 @@ void* Game::gameLoop(void* _args){
             Game::createFood(map);
             isThereFood = true;
             (*score)++;
-            cout<<"\033[9;60HSCORE: "<<*score;
+            cout<<"\033["<<VERTICAL_LENGTH / 2 <<";"<<HORIZONTAL_LENGTH + 10<<"HSCORE: "<<*score;
         }
         usleep(100000);
         //checks for direction changes every loop
@@ -129,7 +170,6 @@ void* Game::gameLoop(void* _args){
         *gameOver = ! snake->move(&isThereFood);
         fflush(stdout);
     }
-
 }
 
 void Game::createFood(Map *map){
@@ -147,7 +187,7 @@ void Game::createFood(Map *map){
     //location's x axis value should be in [1-50]
     //           y axis value should be in [1-20]
     //otherwise we get segmentation fault
-    while(map->getCellStatus(temp = new Location(rand() % 50 + 1, rand() % 20 + 1)) != EMPTY){
+    while(map->getCellStatus(temp = new Location(rand() % HORIZONTAL_LENGTH + 1, rand() % VERTICAL_LENGTH + 1)) != EMPTY){
         delete temp;
     }
     map->setCellStatus(temp, FOOD); //putting the food on the map

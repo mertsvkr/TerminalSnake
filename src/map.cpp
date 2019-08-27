@@ -6,11 +6,16 @@
 
 using namespace std;
 
+
+int HORIZONTAL_LENGTH = 50;
+int VERTICAL_LENGTH = 20;
+
 Map::Map(){
-    cells = new CellStates*[50];
-    for(int i = 0; i < 50; i++){
-        cells[i] = new CellStates[20];
-        for(int k = 0; k < 20; k++){
+
+    cells = new CellStates*[HORIZONTAL_LENGTH];
+    for(int i = 0; i < HORIZONTAL_LENGTH; i++){
+        cells[i] = new CellStates[VERTICAL_LENGTH];
+        for(int k = 0; k < VERTICAL_LENGTH; k++){
             cells[i][k] = EMPTY;
         }
     }
@@ -30,24 +35,24 @@ void Map::drawMap(){
     system("clear");
     cout<<"\033[1;1H";
 
-    for(int i = 0; i < 52; i++){
+    for(int i = 0; i < HORIZONTAL_LENGTH + 2; i++){
         cout<<"#";
     }
     cout<<endl;
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < VERTICAL_LENGTH; i++){
         cout<<"#";
-        for(int k = 0; k < 50; k++){
+        for(int k = 0; k < HORIZONTAL_LENGTH; k++){
             cout<<" ";
         }
         cout<<"#"<<endl;
     }
-    for(int i = 0; i < 52; i++){
+    for(int i = 0; i < HORIZONTAL_LENGTH + 2; i++){
         cout<<"#";
     }
 }
 
 Map::~Map(){
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < HORIZONTAL_LENGTH; i++){
         delete [] cells[i];
     }
 
