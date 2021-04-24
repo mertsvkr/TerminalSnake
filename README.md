@@ -14,7 +14,7 @@ It is a classic snake game for Linux terminal.
 # Install
 1. Clone the repository or download the repository as a zip. 
 2. Open your terminal in "makefile" directory of the project.
-3. To compile and run the game, enter `make open` command. After the compilation, the game will start automatically.
+3. To compile and run the game, enter ```make open``` command. After the compilation, the game will start automatically.
 4. If you compiled the project before and want to open the game again, just go to "bin" directory and open the executable "snake" file. 
 
 # How to Play
