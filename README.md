@@ -17,10 +17,10 @@ It is a classic snake game for Linux terminal.
 3. To compile and run the game, enter ```make open``` command. After the compilation, the game will start automatically.
 4. If you compiled the project before and want to open the game again, just go to "bin" directory and open the executable "snake" file. 
 
-# How to Play
+# How to play
 You can play with w,a,s,d keys. Be sure your capslock is not active.
 
-# Project Directories
+# Project directories
 * 'inc' directory contains headerfiles.
 * 'src' directory contains implementations of the classes and the main function.
 * 'makefile' directory contains a 'make file' to compile all the source files and also the game can be open via 'make open' command 
